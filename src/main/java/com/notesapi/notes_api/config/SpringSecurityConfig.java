@@ -13,7 +13,7 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(
-                auth -> auth.requestMatchers("/health").permitAll().
+                auth -> auth.requestMatchers("/health","/auth/*").permitAll().
                         anyRequest().authenticated()
         );
         return http.build();
