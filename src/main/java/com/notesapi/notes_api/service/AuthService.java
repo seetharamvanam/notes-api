@@ -16,6 +16,8 @@ public class AuthService {
     UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JWTService jwtService;
 
     public ResponseEntity<String> registerUser(UserAuthDTO userAuthDTO){
         User existingUser = userRepository.findByEmailAddress(userAuthDTO.getEmailAddress());
@@ -26,16 +28,17 @@ public class AuthService {
             String encodedPassword = passwordEncoder.encode(userAuthDTO.getPassword());
             User newUser = new User(userAuthDTO.getEmailAddress(),encodedPassword);
             userRepository.save(newUser);
-            return new ResponseEntity<>("User registered successfully", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
         }
     }
 
     public ResponseEntity<String> loginUser(UserAuthDTO userAuthDTO){
         User user = userRepository.findByEmailAddress(userAuthDTO.getEmailAddress());
         if (user==null){
-            return new ResponseEntity<>("User with provided email address does not exists!",HttpStatus.CONFLICT);
+            return new ResponseEntity<>("User with provided email address does not exists!",HttpStatus.UNAUTHORIZED);
         }else if(passwordEncoder.matches(userAuthDTO.getPassword(),user.getPassword())){
-            return new ResponseEntity<>("User logged in Successfully!",HttpStatus.ACCEPTED);
+
+            return new ResponseEntity<>("Token :" + jwtService.generateToken(user.getEmailAddress()),HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
