@@ -18,8 +18,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    JWTService jwtService;
-
+    private JWTService jwtService;
 
     public ResponseEntity<String> registerUser(UserAuthDTO userAuthDTO){
         User existingUser = userRepository.findByEmailAddress(userAuthDTO.getEmailAddress());
@@ -37,9 +36,10 @@ public class AuthService {
     public ResponseEntity<JWTTokenDTO> loginUser(UserAuthDTO userAuthDTO){
         User user = userRepository.findByEmailAddress(userAuthDTO.getEmailAddress());
         if (user==null){
-            return new ResponseEntity<>(new JWTTokenDTO("User with provided email address does not exists"),HttpStatus.CONFLICT);
+
+            return new ResponseEntity<>(new JWTTokenDTO("User with provided email address does not exists"),HttpStatus.UNAUTHORIZED);
         }else if(passwordEncoder.matches(userAuthDTO.getPassword(),user.getPassword())){
-            return new ResponseEntity<>(new JWTTokenDTO(jwtService.generateToken(user.getEmailAddress())),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(new JWTTokenDTO(jwtService.generateToken(user.getEmailAddress())),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(new JWTTokenDTO("Invalid credentials"), HttpStatus.UNAUTHORIZED);
         }

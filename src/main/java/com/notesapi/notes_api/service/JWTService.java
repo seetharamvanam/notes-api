@@ -4,7 +4,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
-
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Duration;
@@ -26,7 +25,12 @@ public class JWTService {
                 getBody().getSubject();
     }
 
-    public String generateToken(String userEmail){
-        return Jwts.builder().setSubject(userEmail).setIssuedAt(new Date()).setExpiration(Date.from(Instant.now().plus(Duration.ofMinutes(60)))).signWith(getSignInKey(),SignatureAlgorithm.HS256).compact();
+    public String generateToken(String email){
+        return Jwts.builder().setSubject(email).
+                setIssuedAt(new Date()).
+                setExpiration(new Date(System.currentTimeMillis()+10000*60*60*24)).
+                signWith(getSignInKey(), SignatureAlgorithm.HS256).
+                compact();
+
     }
 }
