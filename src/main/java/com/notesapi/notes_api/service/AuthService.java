@@ -37,11 +37,11 @@ public class AuthService {
         User user = userRepository.findByEmailAddress(userAuthDTO.getEmailAddress());
         if (user==null){
 
-            return new ResponseEntity<>(new JWTTokenDTO("User with provided email address does not exists"),HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new JWTTokenDTO("User with provided email address does not exists",Boolean.FALSE),HttpStatus.UNAUTHORIZED);
         }else if(passwordEncoder.matches(userAuthDTO.getPassword(),user.getPassword())){
-            return new ResponseEntity<>(new JWTTokenDTO(jwtService.generateToken(user.getEmailAddress())),HttpStatus.OK);
+            return new ResponseEntity<>(new JWTTokenDTO(jwtService.generateToken(user.getEmailAddress()),Boolean.TRUE),HttpStatus.OK);
         }else{
-            return new ResponseEntity<>(new JWTTokenDTO("Invalid credentials"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new JWTTokenDTO("Invalid credentials",Boolean.FALSE), HttpStatus.UNAUTHORIZED);
         }
     }
 }
