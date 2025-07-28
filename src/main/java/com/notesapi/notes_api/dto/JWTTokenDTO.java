@@ -1,10 +1,20 @@
 package com.notesapi.notes_api.dto;
 
 public class JWTTokenDTO {
-    String token;
+    private String token;
+    private Boolean status;
 
-    public JWTTokenDTO(String token) {
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public JWTTokenDTO(String token,Boolean status) {
         this.token = token;
+        this.status = status;
     }
 
     public JWTTokenDTO() {
