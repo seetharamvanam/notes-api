@@ -1,0 +1,42 @@
+package com.notesapi.notes_api.service;
+
+import com.notesapi.notes_api.dto.NoteDTO;
+import com.notesapi.notes_api.model.Note;
+import com.notesapi.notes_api.model.User;
+import com.notesapi.notes_api.repository.NoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class NoteService {
+
+    @Autowired
+    NoteRepository noteRepository;
+
+    private User getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
+    }
+
+    public List<Note> getAllNotesForCurrentUser(){
+        return noteRepository.findByUser(getCurrentUser());
+    }
+
+    public NoteDTO createNote(NoteDTO noteDTO){
+        Note note = new Note();
+        note.setUser(getCurrentUser());
+        note.setCreatedAt(new Date());
+        note.setUpdatedAt(new Date());
+        note.setTitle(noteDTO.getTitle());
+        note.setContent(noteDTO.getContent());
+        Note savedNote = noteRepository.save(note);
+        return new NoteDTO(savedNote.getTitle(), savedNote.getContent()
+        ,savedNote.getCreatedAt(), savedNote.getUpdatedAt(), savedNote.getId());
+    }
+
+}

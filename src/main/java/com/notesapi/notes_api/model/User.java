@@ -1,5 +1,6 @@
 package com.notesapi.notes_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ public class User {
     @Column(unique = true)
     private String emailAddress;
     @NotBlank(message = "Password is required")
+    @JsonIgnore
     private String password;
 
     public UUID getId() {
