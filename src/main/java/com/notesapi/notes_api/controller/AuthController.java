@@ -1,5 +1,6 @@
 package com.notesapi.notes_api.controller;
 
+import com.notesapi.notes_api.dto.JWTTokenDTO;
 import com.notesapi.notes_api.dto.UserAuthDTO;
 import com.notesapi.notes_api.model.User;
 import com.notesapi.notes_api.service.AuthService;
@@ -22,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserAuthDTO userAuthDTO){
+    public ResponseEntity<JWTTokenDTO> loginUser(@RequestBody UserAuthDTO userAuthDTO){
         return authService.loginUser(userAuthDTO);
     }
 
