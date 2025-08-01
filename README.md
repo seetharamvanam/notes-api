@@ -30,10 +30,15 @@ A secure, user-specific Notes API built with Spring Boot, using JWT authenticati
 ## 📁 Project Structure
 src/
 ├── controller/ # REST controllers for auth and notes
+
 ├── dto/ # DTOs for request/response shaping
+
 ├── model/ # JPA entity classes
+
 ├── repository/ # Spring Data JPA interfaces
+
 ├── service/ # Business logic
+
 ├── config/ # Security configuration
 
 
