@@ -47,4 +47,19 @@ public class NoteService {
                ,note.getCreatedAt(), note.getUpdatedAt(), note.getId());
    }
 
+   public NoteDTO updateSpecificNotes(long id, NoteDTO noteDTO){
+        Note note = noteRepository.findByIdAndUser(id, getCurrentUser()).orElseThrow(
+                () -> new RuntimeException("Note not found!"));
+        if (!noteDTO.getTitle().isEmpty()){
+            note.setTitle(noteDTO.getTitle());
+        }
+        if (!noteDTO.getContent().isEmpty()) {
+            note.setContent(noteDTO.getContent());
+        }
+        note.setUpdatedAt(new Date());
+        Note newNote = noteRepository.save(note);
+        return new NoteDTO(newNote.getTitle(), newNote.getContent(), newNote.getCreatedAt(),
+                newNote.getUpdatedAt(), newNote.getId());
+   }
+
 }

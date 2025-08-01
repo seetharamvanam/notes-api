@@ -25,4 +25,9 @@ public class NoteController {
 
     @GetMapping("notes/{id}")
     public NoteDTO fetchNotesByIdForUser(@PathVariable Long id){return noteService.fetchsingleNote(id);}
+
+    @PutMapping("notes/{id}")
+    public NoteDTO updateSpecificNotesForUser(@PathVariable Long id, @RequestBody NoteDTO noteDTO){
+        return noteService.updateSpecificNotes(id,noteDTO);
+    }
 }
