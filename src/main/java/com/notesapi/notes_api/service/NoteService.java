@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 public class NoteService {
 
@@ -38,5 +39,12 @@ public class NoteService {
         return new NoteDTO(savedNote.getTitle(), savedNote.getContent()
         ,savedNote.getCreatedAt(), savedNote.getUpdatedAt(), savedNote.getId());
     }
+
+   public NoteDTO fetchsingleNote(long id){
+        Note note = noteRepository.findByIdAndUser(id, getCurrentUser()).
+                orElseThrow(()-> new RuntimeException("Note not found!"));
+       return new NoteDTO(note.getTitle(), note.getContent()
+               ,note.getCreatedAt(), note.getUpdatedAt(), note.getId());
+   }
 
 }

@@ -4,10 +4,7 @@ import com.notesapi.notes_api.dto.NoteDTO;
 import com.notesapi.notes_api.model.Note;
 import com.notesapi.notes_api.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +22,7 @@ public class NoteController {
     public NoteDTO createNewNote(@RequestBody NoteDTO noteDTO){
        return noteService.createNote(noteDTO);
     }
+
+    @GetMapping("notes/{id}")
+    public NoteDTO fetchNotesByIdForUser(@PathVariable Long id){return noteService.fetchsingleNote(id);}
 }
